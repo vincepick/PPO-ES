@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 
 if [ -z "$1" ]; then
@@ -21,42 +21,28 @@ echo "Script started at: $start_time on machine: $hostname"
 echo "Experiment base name: $EXPERIMENT_BASE"
 
 
-
-rm -rf "$SPACE_DIR" "$DEFAULT_DIR"
-mkdir -p "$SPACE_DIR" "$DEFAULT_DIR"
-
-
-
-# Run the Python command for using SPACE, using space number 2which is improvement
+# Run the Python command for using SPACE
 python run.py \
-    --train \
     --test_models \
-    --test_cma_es \
-    --test_one_fifth_es \
     --type bbob \
     --instance 1 \
     --dim 40 \
     --experiment_name "${EXPERIMENT_BASE}_space" \
-    --use_space 2 \
+    --use_space 1 \
     --num_training_instances 12 \
-    --num_steps_per_rollout 480 \
     > "${EXPERIMENT_BASE}_output_space.txt"
 
 
 
 # Run the Python command for not using SPACE
 python run.py \
-    --train \
     --test_models \
-    --test_cma_es \
-    --test_one_fifth_es \
     --type bbob \
     --instance 1 \
     --dim 40 \
     --experiment_name "${EXPERIMENT_BASE}_default" \
     --use_space 0 \
     --num_training_instances 12 \
-    --num_steps_per_rollout 480 \
     > "${EXPERIMENT_BASE}_output_default.txt"
 
 

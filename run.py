@@ -22,6 +22,7 @@ def run():
 
     parser.add_argument('--num_training_instances', type=int, default=12, help='How many instances to train models on.')
     parser.add_argument('--num_steps_per_rollout', type=int, default=12*400, help='How many steps there should be for each rollout, every rollout is one policy update.')
+    parser.add_argument('--type_algorithm', type=str, default="PPO", help='Which RL algo would you like to use to train models, PPO is default. ')
     
     # parser.add_argument('--cuda_device', type=str, default='cuda',
     #                     help='Specify the CUDA device to use (e.g., cuda:0, cuda:1)')
@@ -41,7 +42,8 @@ def run():
                          instance_ordering=args.instance_ordering,
                         #  use_default=args.use_default,
                          num_training_instances=args.num_training_instances,
-                         num_steps_per_rollout=args.num_steps_per_rollout
+                         num_steps_per_rollout=args.num_steps_per_rollout,
+                         type_algorithm=args.type_algorithm
                          )
 
 

@@ -26,7 +26,8 @@ def comparing_algorithms(need_train=False,
                          instance_ordering=1,
                         #  use_default=0,
                          num_training_instances=12,
-                         num_steps_per_rollout=12*400 # default is 12 * 400 which was the original value
+                         num_steps_per_rollout=12*400, # default is 12 * 400 which was the original value
+                         type_algorithm="PPO"
 
                          ):
     
@@ -76,6 +77,7 @@ def comparing_algorithms(need_train=False,
         "instance_ordering": instance_ordering,
         "num_training_instances": num_training_instances,
         "num_steps_per_policy_update":num_steps_per_rollout,
+        "type_algorithm":type_algorithm,
   
     }
 
@@ -116,7 +118,7 @@ def comparing_algorithms(need_train=False,
             if need_test_models:
                 
                 experiment_logger.debug(f"Calling test_ppo_es on problem_index: %d", problemIndex)
-                ppo_es.test_ppo_es(test_problem_type, test_dimension, problemIndex, test_instance, experiment_logger)
+                ppo_es.test_ppo_es(test_problem_type, test_dimension, problemIndex, test_instance, experiment_logger, type_algorithm)
             if need_test_cma_es:
                 test_cma_es(results_dir, test_problem_type, test_dimension, problemIndex, test_instance)
             if need_test_one_fifth_es:

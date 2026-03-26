@@ -43,15 +43,9 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
         self.space_logger = space_logger
 
     def _on_step(self) -> bool:
-        # print("in save on best training reward callback")
         current_episode = self.training_env.envs[0].unwrapped.current_episode
 
-        # Save if it's the first episode, then every 120 episodes
-        # changed to 60 
-        # if current_episode == 1 or current_episode % (20) == 0:
-
-        # saves it every 100 episodes
-        # if current_episode == 1 or current_episode % (100) == 0:
+        # Determines at what step increments a model is saved
         if current_episode == 1 or current_episode % (60) == 0:
             if current_episode != self.last_episode:
                 self.last_episode = current_episode
@@ -69,12 +63,24 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
 
         return True
 
+
+# class space_operation(Enum):
+#     NO_SPACE = 0
+#     JUST_SIZES = 1
+#     INSTANCE_STATE = 2
+#     ONE_GENERATION = 3
+
+    
+# class instance_ordering(Enum):
+#     ABSOLUTE = 0
+#     IMPROVEMENT = 1
+#     RELATIVE_IMPROVEMENT = 2
+#     NONE = 3
 # Used to update the environment curriculum at each step 
 class UpdateEnvCallback(BaseCallback):
     def __init__(self, algo_name: str, space_logger, use_space_val=1, instance_ordering_val=1):
-        # not using space is 0 
-        # using space is 1
         super().__init__()
+        # See use_space 
         self.algo_name = algo_name
         self.last_q = 0.0
         self.curriculum_size = 1
@@ -83,13 +89,12 @@ class UpdateEnvCallback(BaseCallback):
 
         # For now just training on 12 total instances
         self.num_training_instances = 12
+        # Following the enums commented above
         self.use_space=space_operation(use_space_val)
         self.instance_ordering=instance_ordering(instance_ordering_val)
-
         self.update_counter=0
-        # self.last_evals = [0] * self.num_training_instances
 
-        # Need to use a dictionary to preserve information on ordering. 
+        # Use a dictionary to preserve information on ordering. 
         self.last_evals = {}
         for i in range(self.num_training_instances):
             self.last_evals[i] = 0
@@ -99,22 +104,14 @@ class UpdateEnvCallback(BaseCallback):
         self.stability_threshold = 3
 
 
-
-
     def _on_training_start(self):
         """
         At the start of training, ensure that curriculum is already set.
         """
-        # Just do nothing
+        # If not using SPACE skip...
         if self.use_space == space_operation.NO_SPACE:
             return True
-
-        # if self.use_space  == space_operation.JUST_SIZES:
-        #     self.set_static_curriculum()
-
-    # else:
-
-    # On training start, initialize the curriculum
+        # On training start, initialize the curriculum
         self.update_curriculum()
         
 
@@ -128,9 +125,9 @@ class UpdateEnvCallback(BaseCallback):
         :return: If the function completed successfully
         """
 
-        # a rollout is collected every 12 * 400 steps, which is n_steps in the ppo_es_model file
+        # A rollout is collected every n_steps steps (default value: 12 * 400 steps). 
         if self.use_space == space_operation.NO_SPACE:
-            # Just don't do anything if space isn't being used
+            # If space isn't being used, skip
             return True
 
         # Retrieve the current index and curriculum
@@ -139,17 +136,9 @@ class UpdateEnvCallback(BaseCallback):
 
         # This means that the current curriculum has been exhausted, need to reset
         if current_index > len(curriculum):
+
             self.space_logger.info("Current Curriculum exhausted, transitioning...")
-
-            sigma_val = self.training_env.envs[0].unwrapped.es.sigma
-
-            # self.space_logger.info(sigma_val)
-
-            # self.space_logger.info("Second Sigma Val:")
-
-
             self.space_logger.info(self.training_env.envs[0].unwrapped.get_sigma())
-
 
             # Update the curriculum size
             self.update_curriculum_size(curriculum)
@@ -161,48 +150,46 @@ class UpdateEnvCallback(BaseCallback):
         return True
 
     def _on_rollout_end(self):
+        """
+        Function for logging when a rollout is over, and the policy is therefore updated
+        Also used for keeping track of once the policy has been updated at least once
+        """
+        
         self.update_counter += 1
-        # our total timesteps is set to 12 * 4000, it keeps training until that is done right now. I think this is what actually stops the training. 
-        # each timestep is just one call to the step.env, which is done within the env_es
-        # each rollout is 12 * 400 steps
+        # Total timesteps is set to 12 * 4000 by default, the program keeps training until this number of steps is reached for each model.
+        # each timestep is one call to the step.env, which is done within the env_es
+        # each rollout is 12 * 400 steps (by default)
         self.space_logger.info(f"Collected rollout:")
         self.space_logger.info(f"                  about to do update [%d] to the policy", self.update_counter)
         self.space_logger.info(f"                  at [%d] model timesteps so far", self.num_timesteps)
 
-        # Sets after the first rollout
+        # Sets after the first rollout, signifying the policy has been updated at least once. 
         self.training_env.envs[0].unwrapped.before_first_rollout = False
 
         return True
-        # return super()._on_rollout_end()
 
     def update_curriculum_size(self, curriculum):
         """
         Helper function used to update the size of the curriculum
 
         If learning sufficiently converged, we can add more instances. 
-        
         """
-        STEP_SIZE_CONST = 1
+        STEP_SIZE_CONST = 1 # Change in size of curriculum
 
         # Calculate mean_q
         eval_env = self.training_env.envs[0].unwrapped 
-
         mean_q = self.get_mean_q(self.model, eval_env, curriculum)
         delta_q = np.abs(np.abs(mean_q) - np.abs(self.last_q))
 
-        # SPACE had it defined as this
+        # Constant used in sizing calculation, explained further in corresponding report
         eta_const = .1
-
         is_stable = delta_q <= eta_const * np.abs(self.last_q) 
-        # and len(curriculum) < self.num_training_instances
-        
 
-        # If condition passes, then increase size by 1
+        # If condition passes, then increase size by STEP_SIZE_CONST
         if (is_stable):
             self.stable_streak+=1
             self.unstable_streak = 0
         else:
-
             self.stable_streak = 0
             self.unstable_streak += 1
 
@@ -228,49 +215,36 @@ class UpdateEnvCallback(BaseCallback):
         """
         Helper function used to update the curriculum
         """
-        NUM_FUNCTIONS  = 12 # TODO make this not hard coded
-
-
-
 
         # Set the env
         eval_env = self.training_env.envs[0].unwrapped 
         temp = []
 
-        # self.space_logger.info("The things are: ")
-        # self.space_logger.info(f"use_space value: {self.use_space}")
-        # self.space_logger.info(f"use_space type: {type(self.use_space)}")
-        # self.space_logger.info(f"JUST_SIZES: {space_operation.JUST_SIZES}")
-        # self.space_logger.info(f"JUST_SIZES type: {type(space_operation.JUST_SIZES)}")
-
         # The first curriculum should be randomly sampled
         if self.use_space == space_operation.JUST_SIZES or self.instance_ordering == instance_ordering.NONE:
             temp = list(range(self.num_training_instances))
         else:
+
             if eval_env.before_first_rollout:
                 self.space_logger.info("Before first policy update, random sample curriculum")
                 temp = self.random_sample_of_instances()
 
             else: 
 
-                if self.instance_ordering == instance_ordering.ABSOLUTE: # absolute ordering
-
+                if self.instance_ordering == instance_ordering.ABSOLUTE: 
                     self.space_logger.info("After first policy update, absolute space ordering")
                     temp = self.order_instances_qvals(self.model, eval_env, self.num_training_instances)
 
                 elif self.instance_ordering == instance_ordering.IMPROVEMENT: 
-
                     self.space_logger.info("After first policy update, improvement space ordering")
                     temp = self.order_instances_improvement(self.model, eval_env, self.num_training_instances, self.last_evals)
                 
                 elif self.instance_ordering == instance_ordering.RELATIVE_IMPROVEMENT:
-
                     self.space_logger.info("After first policy update, relative improvement space ordering")
                     temp = self.order_instances_relative_improvement(self.model, eval_env, self.num_training_instances, self.last_evals)
 
         
-        self.space_logger.info(f"New curriculum is: ")
-        self.space_logger.info(temp)
+        self.space_logger.info(f"New curriculum is: {temp}")
 
         self.curriculum = temp
         new_curriculum = self.curriculum[:self.curriculum_size]
@@ -284,26 +258,18 @@ class UpdateEnvCallback(BaseCallback):
         # This is so that it ignores the first one, which is already set as callbacks run after the step
         self.training_env.envs[0].unwrapped.set_curriculum_index(1) 
     
-    # def set_static_curriculum(self):
-
-    #     temp 
-    #     self.curriculum = temp
-    #     new_curriculum = self.curriculum[:self.curriculum_size]
-    
-
-    # Returns indices in ascending order, used for "absolute"
+    # Returns indices in ascending order, used for "absolute" ordering
     def order_instances_qvals(self,learner, env, num_instances):
         # Order the instances by q value
         evals = self.get_instance_evals(learner, env, num_instances)
         self.last_evals = evals
         return np.argsort(evals)
     
-    # computes absolute improvement in value since last time, used for "improvement"
+    # Computes absolute improvement in value since last time, used for "improvement" ordering
     def order_instances_improvement(self, learner, env, num_instances, last_evals):
         evals = self.get_instance_evals(learner, env, num_instances)
         self.space_logger.info(f"In order instances improvement, old evals are: {last_evals}")
         self.space_logger.info(f"In order instances improvement, current evals are: {evals}")
-        # improvement = [0] * self.num_training_instances
         improvement = {}
         evals_dict = {}
 
@@ -322,9 +288,10 @@ class UpdateEnvCallback(BaseCallback):
             ordered_instances = sorted(improvement, key=improvement.get, reverse=True)
             self.last_evals = evals_dict
             
-            
         return ordered_instances
 
+
+    # Computes relative improvement in value since last time, used for "relative improvement" ordering
     def order_instances_relative_improvement(
         self, learner, env, num_instances, last_evals
     ):
@@ -342,7 +309,6 @@ class UpdateEnvCallback(BaseCallback):
 
             if old_eval == 0:
                 # Avoid division by zero
-                # Just making a very small number
                 old_eval = 0.00001
 
             relative_improvement[i] = (new_eval - old_eval) / old_eval
@@ -383,43 +349,24 @@ class UpdateEnvCallback(BaseCallback):
                 obs[0] = mini_rollout[0]
                 obs[1] = mini_rollout[1]
             
-            # obs, info = env.poll_env()]
-                
-            # obs, info = env.env_method("poll_env", indices=0)[0] # indices refer to the environment, we only hav e1
-
-            # self.space_logger.info(f"Collected observation for instance: [%d]", i)
-            # self.space_logger.info(obs)
-
-            # TODO not entirely sure
-            # trying to fix shape mismatch
-            # I kept getting dimension out of range errors 
             obs_t = obs_as_tensor(obs, learner.device)
-            # if obs_t.ndim == 1:
-            # This is needed to fix the out of range eror 
             obs_t = obs_t.unsqueeze(0)
             obs_list.append(obs_t)
-
-            # else:
-
-                # print("THIS IS BEING TRIGGERED ITS STILL NEEDED")
             val = 0
 
+            # Maintaining backwards compatibility
             if self.algo_name == "trpo":
                 # value is the network's estimate of the expected discounted return from that initial state 
-                # val = learner.policy_pi.value([obs_as_tensor(obs, self.model.device)])
                 val = learner.policy_pi.policy.predict_values([obs_as_tensor(obs, self.model.device)])
             else:
-                # val = learner.policy.predict_values(obs_as_tensor(obs[0], self.model.device))
                 val_t = learner.policy.predict_values(obs_t)
                 val = float(val_t.detach().cpu().numpy().squeeze())
-
             evals.append(val)
 
-        # set the environment back to what it was before
+        # Set the environment curriculum back to what it was before
         env.set_curriculum(prev_set)
 
         self.space_logger.info("Collected instance evals: %s", evals)
-        # self.space_logger.info("    And obs: %s", obs_list)
         return np.array(evals)
 
 
@@ -432,19 +379,11 @@ class UpdateEnvCallback(BaseCallback):
         """
         qs = []
         n_insts = len(curriculum)
-        # env = self.model.env
-
-        # self.space_logger.info("")
-        # self.space_logger.info("Call to get_mean_q to potentially adjust size")
-        # self.space_logger.info("")
+        prev_set = eval_env.get_curriculum()
 
         env = self.training_env.envs[0].unwrapped 
-        # env = self.training_env
-
 
         for i in range(n_insts):
-            # obs = env.reset()
-            # obs, first_val  = env.poll_env()
             env.set_curriculum([i])
             obs, first_val = env.reset()
 
@@ -454,13 +393,11 @@ class UpdateEnvCallback(BaseCallback):
                 obs[0] = mini_rollout[0]
                 obs[1] = mini_rollout[1]
 
-            # obs, info = env.env_method("poll_env", indices=0)[0]
             val = 0
             obs_t = obs_as_tensor(obs, learner.device)
-            # if obs_t.ndim == 1:
+
             # This is needed to fix the out of range eror 
             obs_t = obs_t.unsqueeze(0)
-            # obs_list.append(obs_t)
 
             if self.algo_name == "trpo":
                 # val = self.model.policy_pi.value([obs])
@@ -470,24 +407,23 @@ class UpdateEnvCallback(BaseCallback):
                     val = self.model.policy.predict_values(obs_as_tensor(obs, self.model.device))
                 val = val.cpu().numpy()
             # this is for PPO 
+
             elif self.algo_name == "ppo":
-                # val = self.model.value(obs)
-                # with th.no_grad():
-                    # val = self.model.policy.predict_values(obs_as_tensor(obs, self.model.device))
+
                 val_t = learner.policy.predict_values(obs_t)
                 val = float(val_t.detach().cpu().numpy().squeeze())
 
-
-                # val = val.cpu().numpy()
             else:
                 print("Algo name not recognized")
             qs.append(val)
             # its over a flattened array 
 
-        
+        # Set the environment curriculum back to what it was before
+        env.set_curriculum(prev_set)
         return np.mean(qs)
 
+    
     def random_sample_of_instances(self):
-
+        """Return a random curriculum of instances, for curriculum generation before a policy update"""
         sampled = np.random.permutation(self.num_training_instances).tolist()
         return sampled

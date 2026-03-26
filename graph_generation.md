@@ -35,3 +35,9 @@ There is also the other option of the one which also shows policy updates as a r
 can run:
 
 `python final_graph_generation/graphing_collected_instance_evals.py output_data/results/final_60_model_space/collected_evals_seed_42.csv`
+
+
+# For Box Plot
+While in base directory
+
+`python box_plots/plot_boxplot.py ../some_backup_data/trying_onegen_again_space_space/episodes_tested/DIM_40/ test_boxplot`

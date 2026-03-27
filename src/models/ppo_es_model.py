@@ -66,7 +66,7 @@ class PPO_ES:
         self.cuda_device = cuda_device
         self.space_logger = logger
         
-        self.seeds = [42, 789, 1011, 1738, 2021]
+        self.seeds = [42, 789, 1738, 2026, 7021]
         self.num_models_to_gen = 1
         self.results_dir = os.path.join(base_dir)
         os.makedirs(self.results_dir, exist_ok=True)

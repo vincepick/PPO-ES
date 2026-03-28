@@ -176,7 +176,7 @@ class PPO_ES:
             """
 
 
-    def test_ppo_es(self, problem_type, test_problem_dimension, problem_index, instance, experiment_logger):
+    def test_ppo_es(self, problem_type, test_problem_dimension, problem_index, instance, experiment_logger, type_algorithm):
         """
         Evaluate trained PPO-ES models on a test problem. 
         

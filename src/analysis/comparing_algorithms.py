@@ -27,8 +27,8 @@ def comparing_algorithms(need_train=False,
                         #  use_default=0,
                          num_training_instances=12,
                          num_steps_per_rollout=12*400, # default is 12 * 400 which was the original value
-                         type_algorithm="PPO"
-
+                         type_algorithm="PPO",
+                         include_graphing=False
                          ):
     
     """Print all comparison parameters to standard output."""
@@ -78,8 +78,8 @@ def comparing_algorithms(need_train=False,
         "num_training_instances": num_training_instances,
         "num_steps_per_policy_update":num_steps_per_rollout,
         "type_algorithm":type_algorithm,
-  
-    }
+        "include_graphing":include_graphing
+      }
 
     config_path = os.path.join(results_dir, "experiment_config.json")
     with open(config_path, "w") as f:
@@ -124,13 +124,17 @@ def comparing_algorithms(need_train=False,
             if need_test_one_fifth_es:
                 test_one_fifth_es(results_dir, test_problem_type, test_dimension, problemIndex, test_instance)
             # plot convergence figure
-            Draw().plot_convergence_data_mean_ci(problemIndex, episodes_tested_dir, baselines_dir, plot_dir, test_instance)
+            if include_graphing:
 
-        # plot overall box figure
-        Draw().plot_standardized_performance_boxplot(episodes_tested_dir, baselines_dir, plot_dir, test_instance)
+                Draw().plot_convergence_data_mean_ci(problemIndex, episodes_tested_dir, baselines_dir, plot_dir, test_instance)
 
-        # generate Friedman test table
-        perform_friedman_test(episodes_tested_dir, baselines_dir, plot_dir, test_instance)
+        if include_graphing:
+            # plot overall box figure
+            Draw().plot_standardized_performance_boxplot(episodes_tested_dir, baselines_dir, plot_dir, test_instance)
+
+        if include_graphing:
+            # generate Friedman test table
+            perform_friedman_test(episodes_tested_dir, baselines_dir, plot_dir, test_instance)
     
     finally: 
 

@@ -44,8 +44,8 @@ run_experiment() {
     echo "Running: $EXP_NAME"
     echo "=============================================="
 
-    rm -rf "$EXP_DIR"
-    mkdir -p "$EXP_DIR"
+    # rm -rf "$EXP_DIR"
+    # mkdir -p "$EXP_DIR"
 
     python run.py \
         --train \

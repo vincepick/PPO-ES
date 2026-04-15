@@ -78,7 +78,7 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
 #     NONE = 3
 # Used to update the environment curriculum at each step 
 class UpdateEnvCallback(BaseCallback):
-    def __init__(self, algo_name: str, space_logger, use_space_val=1, instance_ordering_val=1):
+    def __init__(self, algo_name: str, space_logger, use_space_val=1, instance_ordering_val=1, num_training_functions=12, stability_threshold=3):
         super().__init__()
         # See use_space 
         self.algo_name = algo_name
@@ -87,8 +87,8 @@ class UpdateEnvCallback(BaseCallback):
         self.curriculum = []
         self.space_logger = space_logger
 
-        # For now just training on 12 total instances
-        self.num_training_instances = 12
+        # Default train on just 12 instances
+        self.num_training_functions = num_training_functions 
         # Following the enums commented above
         self.use_space=space_operation(use_space_val)
         self.instance_ordering=instance_ordering(instance_ordering_val)
@@ -96,12 +96,12 @@ class UpdateEnvCallback(BaseCallback):
 
         # Use a dictionary to preserve information on ordering. 
         self.last_evals = {}
-        for i in range(self.num_training_instances):
+        for i in range(self.num_training_functions):
             self.last_evals[i] = 0
 
         self.stable_streak = 0
         self.unstable_streak = 0
-        self.stability_threshold = 3
+        self.stability_threshold = stability_threshold
 
 
     def _on_training_start(self):
@@ -199,7 +199,7 @@ class UpdateEnvCallback(BaseCallback):
         if self.stable_streak >= (self.stability_threshold+1): # this is equal to 4 
             curric_size = self.curriculum_size
             # Added guardrail, can't go outside bounds
-            self.curriculum_size = min(curric_size + STEP_SIZE_CONST, self.num_training_instances)
+            self.curriculum_size = min(curric_size + STEP_SIZE_CONST, self.num_training_functions)
             self.space_logger.info(f"Increasing size from: [%d] to [%d]", curric_size, self.curriculum_size)
 
         elif self.unstable_streak >= (self.stability_threshold-1): # this is equal to 2)
@@ -222,7 +222,7 @@ class UpdateEnvCallback(BaseCallback):
 
         # The first curriculum should be randomly sampled
         if self.use_space == space_operation.JUST_SIZES or self.instance_ordering == instance_ordering.NONE:
-            temp = list(range(self.num_training_instances))
+            temp = list(range(self.num_training_functions))
         else:
 
             if eval_env.before_first_rollout:
@@ -233,15 +233,15 @@ class UpdateEnvCallback(BaseCallback):
 
                 if self.instance_ordering == instance_ordering.ABSOLUTE: 
                     self.space_logger.info("After first policy update, absolute space ordering")
-                    temp = self.order_instances_qvals(self.model, eval_env, self.num_training_instances)
+                    temp = self.order_instances_qvals(self.model, eval_env, self.num_training_functions)
 
                 elif self.instance_ordering == instance_ordering.IMPROVEMENT: 
                     self.space_logger.info("After first policy update, improvement space ordering")
-                    temp = self.order_instances_improvement(self.model, eval_env, self.num_training_instances, self.last_evals)
+                    temp = self.order_instances_improvement(self.model, eval_env, self.num_training_functions, self.last_evals)
                 
                 elif self.instance_ordering == instance_ordering.RELATIVE_IMPROVEMENT:
                     self.space_logger.info("After first policy update, relative improvement space ordering")
-                    temp = self.order_instances_relative_improvement(self.model, eval_env, self.num_training_instances, self.last_evals)
+                    temp = self.order_instances_relative_improvement(self.model, eval_env, self.num_training_functions, self.last_evals)
 
         
         self.space_logger.info(f"New curriculum is: {temp}")
@@ -425,5 +425,5 @@ class UpdateEnvCallback(BaseCallback):
     
     def random_sample_of_instances(self):
         """Return a random curriculum of instances, for curriculum generation before a policy update"""
-        sampled = np.random.permutation(self.num_training_instances).tolist()
+        sampled = np.random.permutation(self.num_training_functions).tolist()
         return sampled

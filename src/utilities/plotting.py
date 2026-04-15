@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from src.config.config import POP_SIZE, EPISODES
+from src.config.config import POP_SIZE, EPISODES, EPISODES_MINI
 from src.utilities.tools import load_data
 from scipy.stats import sem, rankdata
 import matplotlib.pyplot as plt
@@ -70,7 +70,7 @@ class Draw:
         # Define a list of colors for the episodes, ensure there are enough distinct colors for all elements
         episode_colors = ['steelblue', 'sandybrown', 'firebrick']
 
-        for i, episode in enumerate(EPISODES):
+        for i, episode in enumerate(EPISODES_MINI):
             fitness_values = load_data(
                 os.path.join(episodes_tested_dir, f'fitness_episode_{episode}_problem_{problem_index}_instance_{instance}.npy'))
             median_fitness_values = np.mean(fitness_values, axis=0)
@@ -139,7 +139,7 @@ class Draw:
 
         episode_colors = ['steelblue', 'sandybrown', 'firebrick']
 
-        for i, episode in enumerate(EPISODES):
+        for i, episode in enumerate(EPISODES_MINI):
             fitness_values = load_data(
                 os.path.join(episodes_tested_dir, f'fitness_episode_{episode}_problem_{problem_index}_instance_{instance}.npy'))
             mean_fitness_values = np.mean(fitness_values, axis=0)
@@ -190,7 +190,7 @@ class Draw:
         all_fitness_values = {'Episode 1': [], 'Episode 600': [], 'Episode 1200': [], 'CMA-ES': [], 'One-Fifth ES': []}
 
         # Collect and standardize data for each EP
-        for episode in EPISODES:  # EPISODES should be something like [1, 600, 1200]
+        for episode in EPISODES_MINI:  # EPISODES should be something like [1, 600, 1200]
             key = f'Episode {episode}'
             for problem_index in range(1, 25):  # Assuming 24 problems
                 fitness_values = load_data(

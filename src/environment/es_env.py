@@ -25,7 +25,7 @@ class ES_Env(gym.Env):
                  seed=None, 
                  space_logger=None,
                  use_space=1, # Use space by default
-                 num_training_instances=12, # Use first 12 instances for training by default
+                 num_training_functions=12, # Use first 12 instances for training by default
                  debug_logger=None,
                  ):
         super(ES_Env, self).__init__() # Inheriting the constructor 
@@ -42,15 +42,14 @@ class ES_Env(gym.Env):
         self.curriculum = [problem_index]
         self.debug_logger = debug_logger
 
-        # self.total_state_size = 2 + self.num_training_instances
 
         self.curriculum_size = 1
         self.curriculum_index = 0
         self.space_logger = space_logger
 
-        # Initial Things Added
+        # Determines operation of SPACE
         self.use_space = use_space
-        self.num_training_instances = num_training_instances
+        self.num_training_functions = num_training_functions
 
         # Setting the initial problem 
         self.problem = self.suite.get_problem(problem_index - 1)
@@ -72,12 +71,14 @@ class ES_Env(gym.Env):
         self.cumulative_reward = 0
         self.base_dir = find_project_root(os.path.dirname(os.path.abspath(__file__)), 'run.py')
 
+        FULL_STATE_SIZE = STATE_SIZE + num_training_functions 
+
         self.mode = 'training'  # Default mode is training
         self.action_space = gym.spaces.Box(low=-np.ones(ACTION_SIZE), high=np.ones(ACTION_SIZE),
                                            shape=(ACTION_SIZE,), dtype=np.float32)
 
-        self.observation_space = gym.spaces.Box(low=-np.ones(STATE_SIZE), high=np.ones(STATE_SIZE),
-                                                shape=(STATE_SIZE,), dtype=np.float32)
+        self.observation_space = gym.spaces.Box(low=-np.ones(FULL_STATE_SIZE), high=np.ones(FULL_STATE_SIZE),
+                                                shape=(FULL_STATE_SIZE,), dtype=np.float32)
 
     # Should never be setting problem index
     def set_curriculum_index(self, curriculum_index: int):
@@ -162,11 +163,11 @@ class ES_Env(gym.Env):
                 if self.use_space == 0:
                     self.problem_index += 1
 
-                    if self.problem_index % self.num_training_instances == 0:
-                        self.problem_index = self.num_training_instances 
+                    if self.problem_index % self.num_training_functions == 0:
+                        self.problem_index = self.num_training_functions 
 
                     else:
-                        self.problem_index = self.problem_index % self.num_training_instances 
+                        self.problem_index = self.problem_index % self.num_training_functions 
 
                     
                     self.problem = self.suite.get_problem(self.problem_index -1)
@@ -318,9 +319,9 @@ class ES_Env(gym.Env):
 
     def get_problem_one_hot(self, problem_idx: int):
 
-        one_hot = np.zeros(self.num_training_instances, dtype=np.float32)
+        one_hot = np.zeros(self.num_training_functions, dtype=np.float32)
 
         # Guard just in case 
-        if 0 <= problem_idx < self.num_training_instances:
+        if 0 <= problem_idx < self.num_training_functions:
             one_hot[problem_idx] = 1.0
         return one_hot

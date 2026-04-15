@@ -25,7 +25,7 @@ def comparing_algorithms(need_train=False,
                          use_space=1,
                          instance_ordering=1,
                         #  use_default=0,
-                         num_training_instances=12,
+                         num_training_functions=12,
                          num_steps_per_rollout=12*400, # default is 12 * 400 which was the original value
                          type_algorithm="PPO",
                          include_graphing=False
@@ -60,7 +60,7 @@ def comparing_algorithms(need_train=False,
     }
 
 
-
+    # additional configuration information
     config = {
         "system_info": machine_info,
         "starting timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -75,10 +75,10 @@ def comparing_algorithms(need_train=False,
         "experiment_name": experiment_name,
         "use_space": use_space,
         "instance_ordering": instance_ordering,
-        "num_training_instances": num_training_instances,
+        "num_training_functions": num_training_functions,
         "num_steps_per_policy_update":num_steps_per_rollout,
         "type_algorithm":type_algorithm,
-        "include_graphing":include_graphing
+        "include_graphing":include_graphing,
       }
 
     config_path = os.path.join(results_dir, "experiment_config.json")
@@ -95,8 +95,7 @@ def comparing_algorithms(need_train=False,
     start_time = time.time()
 
     try: 
-        # training called here and here alone
-        # its only trained on the first 12 I believe 
+        # setting number of steps per rollout
         if need_train:
             ppo_es.train_ppo_es(num_steps_per_rollout)
 
@@ -155,6 +154,13 @@ def comparing_algorithms(need_train=False,
 
 
 
+# Built loosely on one of the examples from python logging library documentation
+    # https://docs.python.org/3/library/logging.html
+
+"""
+Basic logging system used to aid development and analysis.
+"""
+
 def build_logger(experiment_dir: str):
     os.makedirs(experiment_dir, exist_ok=True)
 
@@ -162,25 +168,23 @@ def build_logger(experiment_dir: str):
     debug_log_path = os.path.join(experiment_dir, "debug.log")
     models_log_path = os.path.join(experiment_dir, "models.log")
 
-    # Main logger
     logger = logging.getLogger("ppo_es_training")
-    logger.setLevel(logging.DEBUG)  # allow debug through the logger itself
+    logger.setLevel(logging.DEBUG)  
 
-    # If you run this multiple times in the same process, avoid duplicate handlers
     logger.handlers.clear()
 
     formatter = logging.Formatter(
         "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
     )
 
-    # --- training.log: INFO+ ---
+    # Training Log Generator (main one used)
     training_handler = logging.FileHandler(training_log_path)
     training_handler.setLevel(logging.INFO)
     training_handler.setFormatter(formatter)
     training_handler.set_name("training_file")
     logger.addHandler(training_handler)
 
-    # --- debug.log: DEBUG only (no INFO duplication) ---
+    # debug log (wasn't actually used for analysis)
     debug_handler = logging.FileHandler(debug_log_path)
     debug_handler.setLevel(logging.DEBUG)
     debug_handler.setFormatter(formatter)
@@ -188,11 +192,10 @@ def build_logger(experiment_dir: str):
     debug_handler.addFilter(lambda record: record.levelno == logging.DEBUG)
     logger.addHandler(debug_handler)
 
-    # --- child logger for models ---
+    # logging of models
     models_logger = logger.getChild("modellog")
     models_logger.setLevel(logging.INFO)
 
-    # Important: models_logger is its own logger object, clear its handlers too
     models_logger.handlers.clear()
 
     models_handler = logging.FileHandler(models_log_path)
@@ -201,13 +204,10 @@ def build_logger(experiment_dir: str):
     models_handler.set_name("models_file")
     models_logger.addHandler(models_handler)
 
-    # Prevent modellog from also writing into training.log/debug.log via propagation
     models_logger.propagate = False
 
-    # Attach for convenience
     logger.modellog = models_logger
 
-    # Prevent main logger from propagating to root logger (avoids console duplicates)
     logger.propagate = False
 
     return logger

@@ -2,7 +2,7 @@ import random
 
 from src.environment.es_env import ES_Env
 from src.callbacks.callbacks import LearningRateScheduler, SaveOnBestTrainingRewardCallback, UpdateEnvCallback
-from src.config.config import NUM_RUN, TRAIN_INSTANCE, EPISODES
+from src.config.config import NUM_RUN, TRAIN_INSTANCE, EPISODES, STABILITY_THRESHOLD
 from src.utilities.tools import linear_schedule, save_data
 from stable_baselines3 import PPO
 # from sb3_contrib import TRPO
@@ -72,6 +72,7 @@ class PPO_ES:
         os.makedirs(self.results_dir, exist_ok=True)
         print(config_info)
         self.config_info = config_info
+        self.num_training_functions = self.config_info["num_training_functions"]
 
     def train_ppo_es(self, num_steps_per_rollout):
         """
@@ -102,7 +103,7 @@ class PPO_ES:
                                               space_logger=self.space_logger,
                                               dim=self.config_info["test_dimension"], 
                                               use_space=self.config_info["use_space"], 
-                                              num_training_instances=self.config_info["num_training_instances"], 
+                                              num_training_functions=self.num_training_functions, 
                                               instance=self.config_info["test_instance"]), 
                                               n_envs=1)
                                                 # train instance is always 1 for their experiments
@@ -145,7 +146,7 @@ class PPO_ES:
 
             lr_scheduler_callback.total_timesteps = total_timesteps
 
-            space_callback = UpdateEnvCallback("ppo", space_logger=self.space_logger, use_space_val=self.config_info["use_space"], instance_ordering_val=self.config_info["instance_ordering"])
+            space_callback = UpdateEnvCallback("ppo", space_logger=self.space_logger, use_space_val=self.config_info["use_space"], instance_ordering_val=self.config_info["instance_ordering"], num_training_functions=self.num_training_functions, stability_threshold=STABILITY_THRESHOLD)
 
             # Using PPO from stable baseline 3
                 # the callback returns the trained model after neraling
@@ -201,7 +202,7 @@ class PPO_ES:
                                                     instance=instance,
                                                     dim=test_problem_dimension,
                                                     problem_index=problem_index,
-                                                    seed=seed, debug_logger=experiment_logger
+                                                    seed=seed, debug_logger=experiment_logger,num_training_functions=self.num_training_functions
                                                     ), n_envs=1)
 
 

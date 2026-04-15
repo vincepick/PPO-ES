@@ -1,0 +1,413 @@
+{
+  "source_file": "auc_tofopt_dim40_instances_1-4.json",
+  "per_function_ranges": {
+    "problem_1": {
+      "problem": 1,
+      "overall_lowest_auc": 994.2592460015418,
+      "overall_highest_auc": 11340.793976469171,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order2_steps512",
+        "episode": 1140,
+        "instance": 1,
+        "file": "output_data/results/spaceop3_order2_steps512/episodes_tested/DIM_40/fitness_episode_1140_problem_1_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order2_steps256",
+        "episode": 1020,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order2_steps256/episodes_tested/DIM_40/fitness_episode_1020_problem_1_instance_2.npy"
+      }
+    },
+    "problem_2": {
+      "problem": 2,
+      "overall_lowest_auc": 22852538.391143057,
+      "overall_highest_auc": 779091959.7508307,
+      "lowest_auc_source": {
+        "experiment": "spaceop0_order3_steps256",
+        "episode": 1200,
+        "instance": 1,
+        "file": "output_data/results/spaceop0_order3_steps256/episodes_tested/DIM_40/fitness_episode_1200_problem_2_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop0_order3_steps256",
+        "episode": 240,
+        "instance": 2,
+        "file": "output_data/results/spaceop0_order3_steps256/episodes_tested/DIM_40/fitness_episode_240_problem_2_instance_2.npy"
+      }
+    },
+    "problem_3": {
+      "problem": 3,
+      "overall_lowest_auc": 16591.03771530272,
+      "overall_highest_auc": 64614.37210908006,
+      "lowest_auc_source": {
+        "experiment": "spaceop1_order3_steps1024",
+        "episode": 1080,
+        "instance": 4,
+        "file": "output_data/results/spaceop1_order3_steps1024/episodes_tested/DIM_40/fitness_episode_1080_problem_3_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps1024",
+        "episode": 420,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order1_steps1024/episodes_tested/DIM_40/fitness_episode_420_problem_3_instance_2.npy"
+      }
+    },
+    "problem_4": {
+      "problem": 4,
+      "overall_lowest_auc": 19482.22162243646,
+      "overall_highest_auc": 57911.686625603914,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order1_steps2048",
+        "episode": 1020,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order1_steps2048/episodes_tested/DIM_40/fitness_episode_1020_problem_4_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop0_order3_steps1024",
+        "episode": 1020,
+        "instance": 2,
+        "file": "output_data/results/spaceop0_order3_steps1024/episodes_tested/DIM_40/fitness_episode_1020_problem_4_instance_2.npy"
+      }
+    },
+    "problem_5": {
+      "problem": 5,
+      "overall_lowest_auc": 4341.3412104217705,
+      "overall_highest_auc": 31006.560130613558,
+      "lowest_auc_source": {
+        "experiment": "spaceop1_order3_steps256",
+        "episode": 960,
+        "instance": 4,
+        "file": "output_data/results/spaceop1_order3_steps256/episodes_tested/DIM_40/fitness_episode_960_problem_5_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order1_steps256",
+        "episode": 420,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order1_steps256/episodes_tested/DIM_40/fitness_episode_420_problem_5_instance_4.npy"
+      }
+    },
+    "problem_6": {
+      "problem": 6,
+      "overall_lowest_auc": 2149093.8867925685,
+      "overall_highest_auc": 27997063.372387014,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 1080,
+        "instance": 3,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_1080_problem_6_instance_3.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 240,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_240_problem_6_instance_4.npy"
+      }
+    },
+    "problem_7": {
+      "problem": 7,
+      "overall_lowest_auc": 7324.9358748308805,
+      "overall_highest_auc": 67624.7530010259,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order0_steps256",
+        "episode": 720,
+        "instance": 3,
+        "file": "output_data/results/spaceop3_order0_steps256/episodes_tested/DIM_40/fitness_episode_720_problem_7_instance_3.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 840,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_840_problem_7_instance_2.npy"
+      }
+    },
+    "problem_8": {
+      "problem": 8,
+      "overall_lowest_auc": 408105.1475506257,
+      "overall_highest_auc": 4647707.413878751,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 780,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_780_problem_8_instance_2.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop0_order3_steps256",
+        "episode": 1020,
+        "instance": 3,
+        "file": "output_data/results/spaceop0_order3_steps256/episodes_tested/DIM_40/fitness_episode_1020_problem_8_instance_3.npy"
+      }
+    },
+    "problem_9": {
+      "problem": 9,
+      "overall_lowest_auc": 7486.8943173433545,
+      "overall_highest_auc": 62529.00608609382,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order2_steps512",
+        "episode": 300,
+        "instance": 1,
+        "file": "output_data/results/spaceop2_order2_steps512/episodes_tested/DIM_40/fitness_episode_300_problem_9_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop0_order3_steps1024",
+        "episode": 1,
+        "instance": 3,
+        "file": "output_data/results/spaceop0_order3_steps1024/episodes_tested/DIM_40/fitness_episode_1_problem_9_instance_3.npy"
+      }
+    },
+    "problem_10": {
+      "problem": 10,
+      "overall_lowest_auc": 34593275.40901889,
+      "overall_highest_auc": 1239165087.5794668,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order0_steps2048",
+        "episode": 840,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order0_steps2048/episodes_tested/DIM_40/fitness_episode_840_problem_10_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order0_steps256",
+        "episode": 1020,
+        "instance": 2,
+        "file": "output_data/results/spaceop2_order0_steps256/episodes_tested/DIM_40/fitness_episode_1020_problem_10_instance_2.npy"
+      }
+    },
+    "problem_11": {
+      "problem": 11,
+      "overall_lowest_auc": 8695.156130674752,
+      "overall_highest_auc": 33247664.10914359,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order1_steps512",
+        "episode": 360,
+        "instance": 3,
+        "file": "output_data/results/spaceop2_order1_steps512/episodes_tested/DIM_40/fitness_episode_360_problem_11_instance_3.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 300,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_300_problem_11_instance_4.npy"
+      }
+    },
+    "problem_12": {
+      "problem": 12,
+      "overall_lowest_auc": 1400401361.9645853,
+      "overall_highest_auc": 10760583995.427107,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 1200,
+        "instance": 1,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_1200_problem_12_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order0_steps256",
+        "episode": 1,
+        "instance": 2,
+        "file": "output_data/results/spaceop2_order0_steps256/episodes_tested/DIM_40/fitness_episode_1_problem_12_instance_2.npy"
+      }
+    },
+    "problem_13": {
+      "problem": 13,
+      "overall_lowest_auc": 33415.15100191301,
+      "overall_highest_auc": 134998.27870635377,
+      "lowest_auc_source": {
+        "experiment": "spaceop0_order3_steps256",
+        "episode": 1020,
+        "instance": 1,
+        "file": "output_data/results/spaceop0_order3_steps256/episodes_tested/DIM_40/fitness_episode_1020_problem_13_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 780,
+        "instance": 3,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_780_problem_13_instance_3.npy"
+      }
+    },
+    "problem_14": {
+      "problem": 14,
+      "overall_lowest_auc": 343.3171262855638,
+      "overall_highest_auc": 2530.0032670337127,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps4800",
+        "episode": 1020,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order1_steps4800/episodes_tested/DIM_40/fitness_episode_1020_problem_14_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 240,
+        "instance": 1,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_240_problem_14_instance_1.npy"
+      }
+    },
+    "problem_15": {
+      "problem": 15,
+      "overall_lowest_auc": 18155.781807482374,
+      "overall_highest_auc": 59627.36694770414,
+      "lowest_auc_source": {
+        "experiment": "spaceop1_order3_steps256",
+        "episode": 1200,
+        "instance": 3,
+        "file": "output_data/results/spaceop1_order3_steps256/episodes_tested/DIM_40/fitness_episode_1200_problem_15_instance_3.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order1_steps256",
+        "episode": 960,
+        "instance": 1,
+        "file": "output_data/results/spaceop2_order1_steps256/episodes_tested/DIM_40/fitness_episode_960_problem_15_instance_1.npy"
+      }
+    },
+    "problem_16": {
+      "problem": 16,
+      "overall_lowest_auc": 532.4389864824246,
+      "overall_highest_auc": 2493.4762342398744,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 540,
+        "instance": 1,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_540_problem_16_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 720,
+        "instance": 3,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_720_problem_16_instance_3.npy"
+      }
+    },
+    "problem_17": {
+      "problem": 17,
+      "overall_lowest_auc": 191.83493741041144,
+      "overall_highest_auc": 716.164399619832,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order0_steps512",
+        "episode": 360,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order0_steps512/episodes_tested/DIM_40/fitness_episode_360_problem_17_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 720,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_720_problem_17_instance_2.npy"
+      }
+    },
+    "problem_18": {
+      "problem": 18,
+      "overall_lowest_auc": 642.2981968339861,
+      "overall_highest_auc": 2830.272191631137,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order1_steps512",
+        "episode": 1200,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order1_steps512/episodes_tested/DIM_40/fitness_episode_1200_problem_18_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order0_steps256",
+        "episode": 120,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order0_steps256/episodes_tested/DIM_40/fitness_episode_120_problem_18_instance_2.npy"
+      }
+    },
+    "problem_19": {
+      "problem": 19,
+      "overall_lowest_auc": 109.39367209303605,
+      "overall_highest_auc": 358.4705634911204,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order0_steps256",
+        "episode": 960,
+        "instance": 2,
+        "file": "output_data/results/spaceop2_order0_steps256/episodes_tested/DIM_40/fitness_episode_960_problem_19_instance_2.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop1_order3_steps4800",
+        "episode": 120,
+        "instance": 1,
+        "file": "output_data/results/spaceop1_order3_steps4800/episodes_tested/DIM_40/fitness_episode_120_problem_19_instance_1.npy"
+      }
+    },
+    "problem_20": {
+      "problem": 20,
+      "overall_lowest_auc": 48786.266354811625,
+      "overall_highest_auc": 756868.9170939587,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order0_steps512",
+        "episode": 1140,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order0_steps512/episodes_tested/DIM_40/fitness_episode_1140_problem_20_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order1_steps1024",
+        "episode": 1,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order1_steps1024/episodes_tested/DIM_40/fitness_episode_1_problem_20_instance_4.npy"
+      }
+    },
+    "problem_21": {
+      "problem": 21,
+      "overall_lowest_auc": 584.7497265161035,
+      "overall_highest_auc": 3372.6798479589606,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 1140,
+        "instance": 1,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_1140_problem_21_instance_1.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order0_steps256",
+        "episode": 180,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order0_steps256/episodes_tested/DIM_40/fitness_episode_180_problem_21_instance_2.npy"
+      }
+    },
+    "problem_22": {
+      "problem": 22,
+      "overall_lowest_auc": 900.8947019456025,
+      "overall_highest_auc": 3445.3695565512025,
+      "lowest_auc_source": {
+        "experiment": "spaceop0_order3_steps256",
+        "episode": 900,
+        "instance": 4,
+        "file": "output_data/results/spaceop0_order3_steps256/episodes_tested/DIM_40/fitness_episode_900_problem_22_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order1_steps256",
+        "episode": 240,
+        "instance": 2,
+        "file": "output_data/results/spaceop3_order1_steps256/episodes_tested/DIM_40/fitness_episode_240_problem_22_instance_2.npy"
+      }
+    },
+    "problem_23": {
+      "problem": 23,
+      "overall_lowest_auc": 82.42993269101105,
+      "overall_highest_auc": 356.7039748797053,
+      "lowest_auc_source": {
+        "experiment": "spaceop3_order1_steps512",
+        "episode": 660,
+        "instance": 3,
+        "file": "output_data/results/spaceop3_order1_steps512/episodes_tested/DIM_40/fitness_episode_660_problem_23_instance_3.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop2_order0_steps256",
+        "episode": 1,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order0_steps256/episodes_tested/DIM_40/fitness_episode_1_problem_23_instance_4.npy"
+      }
+    },
+    "problem_24": {
+      "problem": 24,
+      "overall_lowest_auc": 11655.859353069796,
+      "overall_highest_auc": 24933.286931504674,
+      "lowest_auc_source": {
+        "experiment": "spaceop2_order1_steps256",
+        "episode": 600,
+        "instance": 4,
+        "file": "output_data/results/spaceop2_order1_steps256/episodes_tested/DIM_40/fitness_episode_600_problem_24_instance_4.npy"
+      },
+      "highest_auc_source": {
+        "experiment": "spaceop3_order2_steps2048",
+        "episode": 60,
+        "instance": 4,
+        "file": "output_data/results/spaceop3_order2_steps2048/episodes_tested/DIM_40/fitness_episode_60_problem_24_instance_4.npy"
+      }
+    }
+  }
+}

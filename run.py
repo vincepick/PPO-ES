@@ -21,10 +21,10 @@ def run():
     parser.add_argument('--use_space', type=int, default=1, help='Weather to train with SPACE curriculum.')
     parser.add_argument('--instance_ordering', type=int, default=1, help='What instance ordering to use for SPACE')
 
-    parser.add_argument('--num_training_instances', type=int, default=12, help='How many instances to train models on.')
     parser.add_argument('--num_steps_per_rollout', type=int, default=12*400, help='How many steps there should be for each rollout, every rollout is one policy update.')
     parser.add_argument('--type_algorithm', type=str, default="PPO", help='Which RL algo would you like to use to train models, PPO is default. ')
     parser.add_argument('--include_graphing', action='store_true', help='Including graphing?')
+    parser.add_argument('--num_training_functions', type=int, default=12, help='How many BBOB functions should model policies be trained on')
     
     # parser.add_argument('--cuda_device', type=str, default='cuda',
     #                     help='Specify the CUDA device to use (e.g., cuda:0, cuda:1)')
@@ -43,10 +43,10 @@ def run():
                          use_space=args.use_space,
                          instance_ordering=args.instance_ordering,
                         #  use_default=args.use_default,
-                         num_training_instances=args.num_training_instances,
+                         num_training_functions=args.num_training_functions,
                          num_steps_per_rollout=args.num_steps_per_rollout,
                          type_algorithm=args.type_algorithm,
-                         include_graphing=args.include_graphing
+                         include_graphing=args.include_graphing,
                          )
 
 

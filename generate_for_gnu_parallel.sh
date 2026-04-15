@@ -7,7 +7,8 @@ START_TIME=$(date +"%Y-%m-%d %H:%M:%S")
 
 echo "Script started at: $START_TIME on machine: $HOSTNAME"
 
-STEP_SIZES=(256 512 1024 2048 4800)
+# STEP_SIZES=(256 512 1024 2048 4800)
+STEP_SIZES=(2048)
 
 # Combinations corresponding to the operation of SPACE, and the instance ordering
 COMBINATIONS=(
@@ -57,7 +58,7 @@ run_experiment() {
         --experiment_name "$EXP_NAME" \
         --use_space "$USE_SPACE" \
         --instance_ordering "$INSTANCE_ORDERING" \
-        --num_training_instances 12 \
+        --num_training_functions 6 \
         --num_steps_per_rollout "$NUM_STEPS" \
         > "$OUTPUT_FILE" 2>&1
 
